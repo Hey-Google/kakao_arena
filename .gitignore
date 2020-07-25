@@ -6,16 +6,16 @@
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
 
-all_data
-all_data/*
+#all_data
+#all_data/*
 venv
 venv/*
 ./idea/*
 ./idea
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
-all_data/train/*
-all_data/val/*
+#all_data/train/*
+#all_data/val/*
 
 # IPython
 profile_default/
