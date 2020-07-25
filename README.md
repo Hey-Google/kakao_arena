@@ -14,9 +14,12 @@
 
 ## 모델 실행하는 방법
 
-0. pip install -r requirements.txt 를 shell에 입력한다.
+0. pip install -r requirements.txt 를 shell에 입력한다.  && all_data/melon_give_us 폴더 안에 대회 측에서 제공하는 song_meta.json & train.json & val.json & genre_gn_all.json이 들어가야된다!
+
+   
 
 1. making_csv.py을 실행한다.
+
 2. khaii_preprocessing.py를 실행한다.
 
 
