@@ -18,7 +18,7 @@
 
    
 
-1. making_csv.py을 실행한다.
+1. making_csv.py을 실행한다. (all_data 폴더의 구조를 위해 이미 실행한 채로 git push를 했다.)
 
 2. khaii_preprocessing.py를 실행한다.
 
