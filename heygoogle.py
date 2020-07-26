@@ -4,12 +4,12 @@ import numpy as np
 class HeyGoogle:
     def __init__(self):
         self._dir = './all_data/'
-        self.song_meta = pd.read_json(self._dir + 'song_meta.json', encoding='utf-8')
-        self.genre_gn_all = pd.read_json(self._dir + 'genre_gn_all.json', encoding='utf-8', typ='series')
-        self.train = pd.read_json(self._dir + 'train.json', encoding='utf-8')
-        self.train2 = pd.read_json(self._dir + 'train.json', encoding='utf-8')
-        self.val = pd.read_json(self._dir + 'val.json', encoding='utf-8')
-        self.test = pd.read_json(self._dir + 'test.json', encoding='utf-8')
+        self.song_meta = pd.read_json(self._dir + 'melon_give_us/song_meta.json', encoding='utf-8')
+        self.genre_gn_all = pd.read_json(self._dir + 'melon_give_us/genre_gn_all.json', encoding='utf-8', typ='series')
+        self.train = pd.read_json(self._dir + 'melon_give_us/train.json', encoding='utf-8')
+        self.train2 = pd.read_json(self._dir + 'melon_give_us/train.json', encoding='utf-8')
+        self.val = pd.read_json(self._dir + 'melon_give_us/val.json', encoding='utf-8')
+        self.test = pd.read_json(self._dir + 'melon_give_us/test.json', encoding='utf-8')
 
         ### for name_track ###
         self.train_names = pd.read_csv(self._dir + 'train/train_names.csv')

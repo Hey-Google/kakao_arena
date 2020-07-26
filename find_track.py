@@ -14,8 +14,8 @@ all_tasks = [[100, 400, ['S', 'ST'], 0.3, 'song'], [10, 1000, ['NT'], 0.4, 'tag'
 for i in range(3):
     split, knn_k, test_task, powb, origin = all_tasks[i]
     if i == 0:
-        train = pd.read_csv('./all_data/train/train_playlists.csv')
-        test = pd.read_csv('./all_data/val/val_playlists.csv')
+        # train = pd.read_csv('./all_data/train/train_playlists.csv')
+        # test = pd.read_csv('./all_data/val/val_playlists.csv')
 
         test_tasks_pids = g.val_playlist_meta[g.val_playlist_meta.task.isin(test_task)].pid.unique()
         test = test[test.pid.isin(test_tasks_pids)].copy()
