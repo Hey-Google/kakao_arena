@@ -5,6 +5,8 @@
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
+
+result/
 result/*
 result
 all_data
