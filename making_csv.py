@@ -18,6 +18,8 @@ def make_train_plyst_csv(file):
         for song in f['songs']:
             plyst_song.append([f['id'], song])
         for tag in f['tags']:
+            if tag == '':
+                continue
             plyst_tag.append([f['id'], tag])
     with open('./all_data/train/train_playlists.csv', 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f)
@@ -33,6 +35,8 @@ def make_val_plyst_csv(file):
         for song in f['songs']:
             plyst_song.append([f['id'], song])
         for tag in f['tags']:
+            if tag == '':
+                continue
             plyst_tag.append([f['id'], tag])
     with open('./all_data/val/val_playlists.csv', 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f)
