@@ -9,7 +9,9 @@ def load_data():
     song_meta = json.load(song_meta)
     val = open('./all_data/val.json', encoding='utf-8')
     val = json.load(val)
-    return train, song_meta, val
+    test = open('./all_data/test.json', encoding='utf-8')
+    test = json.load(test)
+    return train, song_meta, val, test
 
 def make_train_plyst_csv(file):
     plyst_song = [['pid', 'song_id']]
@@ -45,8 +47,26 @@ def make_val_plyst_csv(file):
         writer = csv.writer(f)
         writer.writerows(plyst_tag)
 
+def make_test_plyst_csv(file):
+    plyst_song = [['pid', 'song_id']]
+    plyst_tag = [['pid', 'tag']]
+    for f in file:
+        for song in f['songs']:
+            plyst_song.append([f['id'], song])
+        for tag in f['tags']:
+            if tag == '':
+                continue
+            plyst_tag.append([f['id'], tag])
+    with open('./all_data/test/test_playlists.csv', 'w', encoding='utf-8', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(plyst_song)
+    with open('./all_data/test/test_playlists_tag.csv', 'w', encoding='utf-8', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(plyst_tag)
+
 
 if __name__ == '__main__':
-    train, song_meta, val = load_data()
+    train, song_meta, val, test = load_data()
     make_train_plyst_csv(train)
     make_val_plyst_csv(val)
+    make_test_plyst_csv(test)
