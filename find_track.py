@@ -10,7 +10,7 @@ g.tag_meta['tag_code'], tag_codes = g.recode(g.tag_meta['tag'])
 g.name_meta['name_code'], name_codes = g.recode(g.name_meta['name'])
 
 ## RUN the TASKS ##
-all_tasks = [[100, 1000, ['S', 'ST'], 0.4, 'song'], [10, 1000, ['NT'], 0.4, 'tag'], [10, 1000, ['N'], 0.4, 'name']]
+all_tasks = [[100, 400, ['S', 'ST'], 0.3, 'song'], [10, 1000, ['NT'], 0.4, 'tag'], [10, 1000, ['N'], 0.4, 'name']]
 for i in range(3):
     split, knn_k, test_task, powb, origin = all_tasks[i]
     if i == 0:

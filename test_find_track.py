@@ -11,7 +11,7 @@ g.test_name_meta['name_code'], name_codes = g.recode(g.test_name_meta['name'])
 
 ## RUN the TASKS ##
 all_tasks = [[100, 400, ['S', 'ST'], 0.3, 'song'], [10, 1000, ['NT'], 0.4, 'tag'], [10, 1000, ['N'], 0.4, 'name']]
-for i in range(1):
+for i in range(3):
     split, knn_k, test_task, powb, origin = all_tasks[i]
     if i == 0:
         train = pd.read_csv('./all_data/train/train_playlists.csv')

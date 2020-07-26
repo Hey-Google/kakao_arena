@@ -42,7 +42,7 @@ def concat_results_final():
 
     result = pd.merge(res_track, res_tag, on='id')
     missing_list = result['id']
-    missing_df = g.val.loc[~g.val['id'].isin(missing_list)]
+    missing_df = g.test.loc[~g.test['id'].isin(missing_list)]
 
     missing_df['tags'] = [g.pop_tags for _ in range(len(missing_df))]
     missing_df['songs'] = [g.pop_songs for _ in range(len(missing_df))]
