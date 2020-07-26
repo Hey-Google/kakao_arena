@@ -7,10 +7,11 @@ g = HeyGoogle()
 g.playlist_meta['pid_code'], pid_codes = g.recode(g.playlist_meta['pid'])
 g.song_meta['song_code'], song_codes = g.recode(g.song_meta['song_id'])
 g.tag_meta['tag_code'], tag_codes = g.recode(g.tag_meta['tag'])
+g.name_meta['name_code'], name_codes = g.recode(g.name_meta['name'])
 
 ## RUN the TASKS ##
-all_tasks = [[100, 1000, ['S', 'ST'], 0.4, 'song'], [10, 1000, ['NT'], 0.4, 'tag']]
-for i in range(2):
+all_tasks = [[100, 1000, ['S', 'ST'], 0.4, 'song'], [10, 1000, ['NT'], 0.4, 'tag'], [10, 1000, ['N'], 0.4, 'name']]
+for i in range(3):
     split, knn_k, test_task, powb, origin = all_tasks[i]
     if i == 0:
         train = pd.read_csv('./all_data/train/train_playlists.csv')
@@ -92,6 +93,53 @@ for i in range(2):
         sp_A = sp_A.tocsr()
         sp_A_t = sp_A.T
 
+        sp_A_const = spl.coo_matrix(
+            (train_track_agg['val'].values.T, train_track_agg[['pid_code', 'song_code']].values.T))
+        sp_A_const._shape = (int(g.playlist_meta.pid_code.max() + 1), int(g.song_meta.song_code.max() + 1))
+        sp_A_const = sp_A_const.tocsr()
+        sp_A_const_t = sp_A_const.T
+
+        res = g.recs_for_ids(test_agg.pid_code.unique(), 'song', origin, test_agg_pop, powb, sp_A, sp_A_const_t, knn_k, split, pid_codes, song_codes)
+
+    else:
+        train = pd.read_csv('./all_data/train/train_playlists_name.csv')
+        test = pd.read_csv('./all_data/val/val_playlists_name.csv')
+        train_track = pd.read_csv('./all_data/train/train_playlists.csv')
+
+        test_tasks_pids = g.val_playlist_meta[g.val_playlist_meta.task.isin(test_task)].pid.unique()
+        test = test[test.pid.isin(test_tasks_pids)].copy()
+
+        train['pid_code'] = train['pid'].map(pid_codes)
+        train['name_code'] = train['name'].map(name_codes)
+        train.sort_values(['pid_code', 'name_code'], inplace=True)
+
+        train_track['pid_code'] = train_track['pid'].map(pid_codes)
+        train_track['song_code'] = train_track['song_id'].map(song_codes)
+        train_track.sort_values(['pid_code', 'song_code'], inplace=True)
+
+        test['pid_code'] = test['pid'].map(pid_codes)
+        test['name_code'] = test['name'].map(name_codes)
+
+        train_agg = train.drop_duplicates(subset=['pid_code', 'name_code']).copy()
+        train_track_agg = train_track.drop_duplicates(subset=['pid_code', 'song_code']).copy()
+        test_agg = test.drop_duplicates(subset=['pid_code', 'name_code']).copy()
+
+        train_agg['val'] = 1
+        train_track_agg['val'] = 1
+        test_agg['val'] = 1
+
+        train_agg['val_stoch'] = train_agg.groupby('pid_code').val.transform(lambda x: x / np.linalg.norm(x))
+        test_agg['val_stoch'] = test_agg.groupby('pid_code').val.transform(lambda x: x / np.linalg.norm(x))
+
+        test_agg_pop = test_agg.join(train.name_code.value_counts().rename('pop'), on='name_code')
+
+        test_agg_pop['pop'].fillna(1, inplace=True)
+        test_agg_pop.dropna(subset=['name'], inplace=True)
+
+        sp_A = spl.coo_matrix((train_agg['val_stoch'].values.T, train_agg[['pid_code', 'name_code']].values.T))
+        sp_A._shape = (int(g.playlist_meta.pid_code.max() + 1), int(g.name_meta.name_code.max() + 1))
+        sp_A = sp_A.tocsr()
+        sp_A_t = sp_A.T
         sp_A_const = spl.coo_matrix(
             (train_track_agg['val'].values.T, train_track_agg[['pid_code', 'song_code']].values.T))
         sp_A_const._shape = (int(g.playlist_meta.pid_code.max() + 1), int(g.song_meta.song_code.max() + 1))

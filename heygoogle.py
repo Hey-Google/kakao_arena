@@ -11,7 +11,27 @@ class HeyGoogle:
         self.val = pd.read_json(self._dir + 'val.json', encoding='utf-8')
         self.test = pd.read_json(self._dir + 'test.json', encoding='utf-8')
 
-        ## preprocess some files ##
+        ### for name_track ###
+        self.train_names = pd.read_csv(self._dir + 'train/train_names.csv')
+        self.val_names = pd.read_csv(self._dir + 'val/val_names.csv')
+
+        self.train_names.name_normalized = self.train_names.name_normalized.astype('str')
+        self.train_names.name_normalized = self.train_names.name_normalized.apply(lambda x: x.split())
+        self.val_names.name_normalized = self.val_names.name_normalized.astype('str')
+        self.val_names.name_normalized = self.val_names.name_normalized.apply(lambda x: x.split())
+
+        self.train_name = [name for l in self.train_names.name_normalized for name in l]
+        self.val_name = [name for l in self.val_names.name_normalized for name in l]
+        self.tot_name = self.train_name + self.val_name
+
+        self.train_name_set = set([token for l in self.train_names.name_normalized for token in l])
+        self.val_name_set = set([token for l in self.val_names.name_normalized for token in l])
+
+        self.name_union = self.train_name_set.union(self.val_name_set)
+        self.name_union = self.name_union.difference({''})
+        self.name_union_list = sorted(list(self.name_union))
+
+        ### preprocess some files ###
         self.song_meta = pd.DataFrame({
             'song_id': self.song_meta.id,
             'album_name': self.song_meta.album_name,
@@ -30,6 +50,10 @@ class HeyGoogle:
             'name': self.val.plylst_title,
             'num_samples': self.val.songs.apply(len),
             'num_tags': self.val.tags.apply(len)
+        })
+
+        self.name_meta = pd.DataFrame({
+            'name': self.name_union_list
         })
 
         ## popular songs , popular tags for padding ##
@@ -76,9 +100,12 @@ class HeyGoogle:
                     np_p1 = np.zeros([int(self.song_meta.song_code.max() + 1), 1])  # 전체 song 개수 만큼의 영벡터
                     np_p1[p1.song_code.values] = p1[['val_stoch']].values / (
                                 (p1[['pop']].values - 1) ** (powb) + 1)  # 곡 id 인덱스에다가 값을 넣는다.
-                else:
+                elif origin == 'tag':
                     np_p1 = np.zeros([int(self.tag_meta.tag_code.max() + 1), 1])  # 전체 song 개수 만큼의 영벡터
                     np_p1[p1.tag_code.values] = p1[['val_stoch']].values / ((p1[['pop']].values - 1) ** (powb) + 1)
+                else:
+                    np_p1 = np.zeros([int(self.name_meta.name_code.max() + 1), 1])  # 전체 name 개수 만큼의 영벡터
+                    np_p1[p1.name_code.values] = p1[['val_stoch']].values / ((p1[['pop']].values - 1) ** (powb) + 1)
 
                 ### simpls : train의 모든 플레이리스트와 IIF 유사도 계산 -> Inverse Item Frequency 고려한 유사도 나옴 ###
                 # 차원 : 2
@@ -127,9 +154,12 @@ class HeyGoogle:
                 if origin == 'song':
                     np_p1 = np.zeros([int(self.song_meta.song_code.max() + 1), 1])
                     np_p1[p1.song_code.values] = p1[['val_stoch']].values / ((p1[['pop']].values - 1) ** (powb) + 1)
-                else:
+                elif origin == 'tag':
                     np_p1 = np.zeros([int(self.tag_meta.tag_code.max() + 1), 1])
                     np_p1[p1.tag_code.values] = p1[['val_stoch']].values / ((p1[['pop']].values - 1) ** (powb) + 1)
+                else:
+                    np_p1 = np.zeros([int(self.name_meta.name_code.max() + 1), 1])  # 전체 name 개수 만큼의 영벡터
+                    np_p1[p1.name_code.values] = p1[['val_stoch']].values / ((p1[['pop']].values - 1) ** (powb) + 1)
 
                 simpls = sp_A.dot(np_p1)
 
@@ -148,9 +178,11 @@ class HeyGoogle:
                 ### indices_np : 가장 유사한 태그 10개의 index ###
                 if origin == 'song':
                     indices_np = tmp.reshape(-1).argsort()[-(10):][::-1]
-                else:
+                elif origin == 'tag':
                     indices_np = tmp.reshape(-1).argsort()[-(10 + split):][::-1]
                     indices_np = indices_np[np.isin(indices_np, p1.tag_code) == False][:10]
+                else:
+                    indices_np = tmp.reshape(-1).argsort()[-(10):][::-1]
 
                 dfs.append(pd.DataFrame({
                     'pid': np.repeat(pid_, 10),
