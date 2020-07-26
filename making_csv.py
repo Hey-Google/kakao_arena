@@ -3,11 +3,11 @@ import json
 import csv
 
 def load_data():
-    train = open('./all_data/melon_give_us/train.json', encoding='utf-8')
+    train = open('./all_data/train.json', encoding='utf-8')
     train = json.load(train)
-    song_meta = open('./all_data/melon_give_us/song_meta.json', encoding='utf-8')
+    song_meta = open('./all_data/song_meta.json', encoding='utf-8')
     song_meta = json.load(song_meta)
-    val = open('./all_data/melon_give_us/val.json', encoding='utf-8')
+    val = open('./all_data/val.json', encoding='utf-8')
     val = json.load(val)
     return train, song_meta, val
 
