@@ -27,7 +27,7 @@ KNN을 활용하여 여러 케이스를
 
 3. heygoogle.py는 여타 py파일에서 import 하기 위한 용도로 만들었으며，HeyGoogle 클래스를 담고 있습니다.
 
-4. 모든 예측을 마치면 resutt 폴더에 Validation 6개， Test 6개 총 12개의 파일이 생성됩니다． 
+4. 모든 예측을 마치면 result 폴더에 Validation 6개， Test 6개 총 12개의 파일이 생성됩니다． 
 
    4-1) result_packing.py 파일은 validation 예측파일을 합치기 위한 concat_results() 함수와 test 예측파일을 합치기 위한 concat_results_final() 함수로 구성되어 있습니다．용도에 알맞은 함수를 실행시키면 됩니다． 
 

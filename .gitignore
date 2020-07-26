@@ -5,9 +5,10 @@
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
-
-#all_data
-#all_data/*
+result/*
+result
+all_data
+all_data/*
 venv
 venv/*
 .idea//*
@@ -16,7 +17,7 @@ venv/*
 */.ipynb_checkpoints/*
 all_data/train/*
 all_data/val/*
-#all_data/test/*
+all_data/test/*
 all_data/melon_give_us/*
 # IPython
 profile_default/

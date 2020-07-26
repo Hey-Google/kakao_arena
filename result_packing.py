@@ -1,7 +1,7 @@
 import pandas as pd
 from heygoogle import HeyGoogle
 
-g = HeyGoogle()
+
 
 def concat_results():
     res1 = pd.read_json('./result/results_track_1.json')
@@ -51,4 +51,7 @@ def concat_results_final():
     result = pd.concat([result, missing_df], axis=0)
     result.to_json('./result/final_results.json', orient='records')
 
-concat_results_final()
+if __name__ == '__main__':
+    g = HeyGoogle()
+    # concat_results()
+    concat_results_final()

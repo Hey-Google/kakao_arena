@@ -92,36 +92,36 @@ def name_tokenize(sentence):
 def plyst_title_tokenizing():
     train = pd.read_json('./all_data/melon_give_us/train.json', encoding='utf-8')
     val = pd.read_json('./all_data/melon_give_us/val.json', encoding='utf-8')
+    test = pd.read_json('./all_data/melon_give_us/test.json', encoding='utf-8')
     train = train.drop(columns=['tags', 'songs', 'like_cnt', 'updt_date'])
     train['name_normalized'] = train.plylst_title.apply(name_tokenize)
     val = val.drop(columns=['tags', 'songs', 'like_cnt', 'updt_date'])
     val['name_normalized'] = val.plylst_title.apply(name_tokenize)
+    test = test.drop(columns=['tags', 'songs', 'like_cnt', 'updt_date'])
+    test['name_normalized'] = test.plylst_title.apply(name_tokenize)
     train.to_csv('./all_data/train/train_names.csv', index=False)
     val.to_csv('./all_data/val/val_names.csv', index=False)
+    test.to_csv('./all_data/test/test_names.csv', index=False)
 
 def tokenized_title_csv():
     tr = pd.read_csv('./all_data/train/train_names.csv')
     vl = pd.read_csv('./all_data/val/val_names.csv')
+    ts = pd.read_csv('./all_data/test/test_names.csv')
     tr.name_normalized = tr.name_normalized.astype('str').apply(lambda x: x.split())
     vl.name_normalized = vl.name_normalized.astype('str').apply(lambda x: x.split())
+    ts.name_normalized = ts.name_normalized.astype('str').apply(lambda x: x.split())
     rows = []
     _ = tr.apply(lambda row: [rows.append([row.id, tag]) for tag in row.name_normalized if tag != ''], axis=1)
     tr_plyst = pd.DataFrame(rows, columns=['pid', 'name']).to_csv('./all_data/train/train_playlists_name.csv', index=False)
     rows2 = []
     _ = vl.apply(lambda row: [rows2.append([row.id, tag]) for tag in row.name_normalized if tag != ''], axis=1)
     vl_plyst = pd.DataFrame(rows2, columns=['pid', 'name']).to_csv('./all_data/val/val_playlists_name.csv', index=False)
+    rows3 = []
+    _ = ts.apply(lambda row: [rows3.append([row.id, tag]) for tag in row.name_normalized if tag != ''], axis=1)
+    ts_plyst = pd.DataFrame(rows3, columns=['pid', 'name']).to_csv('./all_data/test/test_playlists_name.csv', index=False)
 
 if __name__ == '__main__':
     genre = load_genre_list()
     artist300 = finding_top300_artist()
     plyst_title_tokenizing()
     tokenized_title_csv()
-
-
-
-
-
-
-
-
-
