@@ -57,6 +57,8 @@ def name_tokenize(sentence):
     res = []
     try:
         for word in api.analyze(x):
+            if len(x) ==0:
+                continue
             if re.match('\d+', word.lex) != None:
                 tmp = ''
                 for m in word.morphs:  # '2000년대','2000년대의'에서 '2000년대'만 뽑아내는 코드
@@ -64,6 +66,8 @@ def name_tokenize(sentence):
                         tmp += m.lex
                 res.append(tmp)
             else:
+                if len(x) == 0:
+                    continue
                 a = len(res)
 
                 for i in genre:

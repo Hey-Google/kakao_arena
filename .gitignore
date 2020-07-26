@@ -16,7 +16,7 @@ venv/*
 */.ipynb_checkpoints/*
 all_data/train/*
 all_data/val/*
-
+all_data/melon_give_us/*
 # IPython
 profile_default/
 ipython_config.py
