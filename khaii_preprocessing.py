@@ -96,15 +96,15 @@ def plyst_title_tokenizing():
     val.to_csv('./all_data/val/val_names.csv', index=False)
 
 def tokenized_title_csv():
-    tr = pd.read_csv('./data/train/train_names.csv')
-    vl = pd.read_csv('./data/val/val_names.csv')
+    tr = pd.read_csv('./all_data/train/train_names.csv')
+    vl = pd.read_csv('./all_data/val/val_names.csv')
     tr.name_normalized = tr.name_normalized.astype('str').apply(lambda x: x.split())
     vl.name_normalized = vl.name_normalized.astype('str').apply(lambda x: x.split())
     rows = []
-    _ = tr.apply(lambda row: [rows.append([row.pid, tag]) for tag in row.name_normalized if tag != ''], axis=1)
+    _ = tr.apply(lambda row: [rows.append([row.id, tag]) for tag in row.name_normalized if tag != ''], axis=1)
     tr_plyst = pd.DataFrame(rows, columns=['pid', 'name']).to_csv('./all_data/train/train_playlists_name.csv', index=False)
     rows2 = []
-    _ = vl.apply(lambda row: [rows2.append([row.pid, tag]) for tag in row.name_normalized if tag != ''], axis=1)
+    _ = vl.apply(lambda row: [rows2.append([row.id, tag]) for tag in row.name_normalized if tag != ''], axis=1)
     vl_plyst = pd.DataFrame(rows2, columns=['pid', 'name']).to_csv('./all_data/val/val_playlists_name.csv', index=False)
 
 if __name__ == '__main__':
