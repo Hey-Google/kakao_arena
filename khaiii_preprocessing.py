@@ -146,13 +146,15 @@ def tokenized_title_csv(length):
                            axis=1)
         pd.DataFrame(rows, columns=['pid', 'name']).to_csv('./all_data/test/test_playlists_name.csv', index=False)
 
+if __name__ == '__main__':
+    genre = load_genre_list()
 
-genre = load_genre_list()
+    ##### Set1 - for making csv relatedt to train / validation'
+    artist = finding_top_artist(300)
+    plyst_title_tokenizing(300)
+    tokenized_title_csv(300)
 
-artist = finding_top_artist(300)
-plyst_title_tokenizing(300)
-tokenized_title_csv(300)
-
-artist = finding_top_artist(10000)
-plyst_title_tokenizing(10000)
-tokenized_title_csv(10000)
+    ##### Set2 - for making csv relatedt to test'
+    artist = finding_top_artist(10000)
+    plyst_title_tokenizing(10000)
+    tokenized_title_csv(10000)
