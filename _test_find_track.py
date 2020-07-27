@@ -103,11 +103,10 @@ for i in range(3):
 
     else:
         train = pd.read_csv('./all_data/train/train_playlists_name.csv')
+        train = train.dropna()
         test = pd.read_csv('./all_data/test/test_playlists_name.csv')
+        test = test.dropna()
         train_track = pd.read_csv('./all_data/train/train_playlists.csv')
-
-        train.dropna(axis=0, inplace=True)
-        test.dropna(axis=0, inplace=True)
 
         test_tasks_pids = g.test_playlist_meta[g.test_playlist_meta.task.isin(test_task)].pid.unique()
         test = test[test.pid.isin(test_tasks_pids)].copy()
