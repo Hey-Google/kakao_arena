@@ -58,7 +58,12 @@
 ## 참고사항
 
 - Windows에서 작업을 진행했습니다. (Khaiii 모듈 다룰 떄는 Mac Os 사용)
+
 - RAM Memory 8GB, 16GB에서 다 실행되었습니다.
+
+- 참고한 논문: 'Efficient K-NN for Playlist Continuation', Kelen et al. 2018.
+
+  
 
 
 
